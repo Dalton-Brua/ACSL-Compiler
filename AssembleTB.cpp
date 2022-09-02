@@ -157,7 +157,7 @@ void ACSLCompiler::parse(string toParse) {
 			subStringToParse = toParse.substr(start, i - start);
 
 			// Checking if OPCODE has been set so we know LOC is next
-			// If it is empty then we know this should be the LABEL
+			// If empty then we know this should be the LABEL
 			if (OPCODE != "") {
 				LOC = subStringToParse;
 			}
@@ -208,7 +208,6 @@ void ACSLCompiler::parse(string toParse) {
 			}
 			
 			// If after the first pass OPCODE is empty, we know there is a LABEL
-			// If OPCODE has been set, we know that this must be a LOC
 			if (OPCODE == "") {
 				LABEL = subStringToParse;
 			}
