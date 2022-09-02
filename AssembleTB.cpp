@@ -3,13 +3,6 @@
 // Course: COSC 2425
 // Comments: None
 
-// This is probably the coolest thing I've ever written. It is also probably 
-// much more complicated than it needs to be, but it works. Uses an ACSLCompiler
-// class (created by me) to run everything.
-
-// Also I understand I am not really supposed to be using break statements unless
-// it is a switch statement, but I don't know how I could do this if I didn't use them
-
 #include <iostream>
 #include <string>
 #include <vector>
