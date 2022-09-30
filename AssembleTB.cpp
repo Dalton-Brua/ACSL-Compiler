@@ -3,10 +3,18 @@
 // Course: COSC 2425
 // Comments: None
 
+// This is probably the coolest thing I've ever written. It is also probably 
+// much more complicated than it needs to be, but it works. Uses an ACSLCompiler
+// class (created by me) to run everything.
+
+// Also I understand I am not really supposed to be using break statements unless
+// it is a switch statement, but I don't know how I could do this if I didn't use them
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <fstream>
+#include <regex>
 
 using namespace std;
 
@@ -157,7 +165,7 @@ void ACSLCompiler::parse(string toParse) {
 			subStringToParse = toParse.substr(start, i - start);
 
 			// Checking if OPCODE has been set so we know LOC is next
-			// If empty then we know this should be the LABEL
+			// If it is empty then we know this should be the LABEL
 			if (OPCODE != "") {
 				LOC = subStringToParse;
 			}
@@ -208,6 +216,7 @@ void ACSLCompiler::parse(string toParse) {
 			}
 			
 			// If after the first pass OPCODE is empty, we know there is a LABEL
+			// If OPCODE has been set, we know that this must be a LOC
 			if (OPCODE == "") {
 				LABEL = subStringToParse;
 			}
@@ -227,6 +236,12 @@ void ACSLCompiler::command(string OPCODE, string LOC, string LABEL) {
 
 	// Creates a variable with the name LABEL and value LOC
 	if (OPCODE == "DC") {
+		
+		// If the first character is a number, throws error
+		if (regex_match(LABEL, regex("^[0-9]+(.*)"))) {
+			cout << "A LABEL CANNOT START WITH A NUMBER";
+			throw invalid_argument("A LABEL CANNOT START WITH A NUMBER");
+		}
 		// Loops through all labels, finds a new location, places the LABEL
 		// in a specific index, resizes the vector, puts the value LOC
 		// into that specific index of the 'variables' vector, and
@@ -432,7 +447,7 @@ void ACSLCompiler::command(string OPCODE, string LOC, string LABEL) {
 		if (ACC > 0) {
 			for (int i = 0; i < getLines(); i++) {
 				// Only creates a substring with LOC length to find it faster
-				if (lines[i].substr(0, LOC.length()+1) == LOC) {
+				if (lines[i].substr(0, LOC.length()) == LOC) {
 					// Sets commandLine to i-1 because the loop in main will increment it again
 				commandLine = i-1;
 					break;
@@ -446,7 +461,7 @@ void ACSLCompiler::command(string OPCODE, string LOC, string LABEL) {
 		if (ACC < 0) {
 			for (int i = 0; i < getLines(); i++) {
 				// Only creates a substring with LOC length to find it faster
-				if (lines[i].substr(0, LOC.length()+1) == LOC) {
+				if (lines[i].substr(0, LOC.length()) == LOC) {
 					// Sets commandLine to i-1 because the loop in main will increment it again
 					commandLine = i-1;
 					break;
